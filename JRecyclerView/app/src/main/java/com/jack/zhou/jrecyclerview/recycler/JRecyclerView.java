@@ -17,17 +17,17 @@ import android.support.v7.widget.RecyclerView;
 /**
  * Created by "jackzhous" on 2016/7/29.
  */
-public class JRecyclerAdapter {
+public class JRecyclerView {
 
-    private static final String TAG = "JRecyclerAdapter";
+    private static final String TAG = "JRecyclerView";
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager manager;
     private Context context;
 
-    public JRecyclerAdapter(Context context){
+    public JRecyclerView(Context context, RecyclerView recyclerView){
         this.context = context;
-
+        this.recyclerView = recyclerView;
     }
 
 
@@ -51,6 +51,12 @@ public class JRecyclerAdapter {
      * 设置其recycleview并开始显示
      */
     public void startToShow(){
+        if(!check_data_complete()){
+            return;
+        }
+
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setAdapter(adapter);
 
     }
 
