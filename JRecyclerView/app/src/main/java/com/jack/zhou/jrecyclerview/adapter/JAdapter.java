@@ -239,9 +239,11 @@ public class JAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         }
         ViewPager pager = headHolder.viewPager;
         LinearLayout linearLayout = headHolder.mDotContainer;
-
+        if(null != linearLayout && linearLayout.getChildAt(0) != null){                                     //纺织重复添加
+            return;
+        }
         ViewGroup.LayoutParams dot_params = new ViewGroup.LayoutParams(30,30);
-        //ViewGroup.LayoutParams image_params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ViewGroup.LayoutParams image_params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         ImageView v = new ImageView(context);
         v.setImageDrawable(mDotSelectColor);
         v.setLayoutParams(dot_params);

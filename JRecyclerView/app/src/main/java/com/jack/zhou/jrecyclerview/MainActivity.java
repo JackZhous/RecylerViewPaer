@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -162,8 +163,19 @@ public class MainActivity extends AppCompatActivity
         adapter.setBodyTextList(bodyTextList);
 
         jview.setAdapter(adapter);
-        jview.setManager(new GridLayoutManager(this,2));
+        final GridLayoutManager manager = new GridLayoutManager(this,2, LinearLayoutManager.VERTICAL, false);
+        jview.setManager(manager);
         jview.startToShow();
+        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
+            @Override
+            public int getSpanSize(int position) {
+                if (0 == position){
+                    return manager.getSpanCount();
+                }
+
+                return 1;
+            }
+        });
     }
 
 }
