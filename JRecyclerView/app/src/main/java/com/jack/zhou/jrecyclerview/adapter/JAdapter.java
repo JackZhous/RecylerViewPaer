@@ -76,10 +76,11 @@ public class JAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         JLog.print(TAG, "onBindViewHolder -- position = " + position);
         if(holder instanceof BodyViewHolder){
+            position = position - 1;                                                        //头部占用了一个位置，所以胸部必须减掉头部的1
             ((BodyViewHolder)holder).image.setImageDrawable(bodyImageList.get(position));
             ((BodyViewHolder)holder).tv.setText(bodyTextList.get(position));
         }else{
-            //((HeaderViewHolder)holder).viewPager
+            initViewPager(holder);
         }
     }
 
@@ -121,7 +122,7 @@ public class JAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         public BodyViewHolder(View itemView) {
             super(itemView);
 
-            image = (ImageView)itemView.findViewById(R.id.imageView);
+            image = (ImageView)itemView.findViewById(R.id.image);
             tv = (TextView)itemView.findViewById(R.id.tv_info);
         }
     }
@@ -182,11 +183,21 @@ public class JAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
             container.addView(image);
             return image;
         }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            //super.destroyItem(container, position, object);
+        }
     }
 
 
     private class PageListener implements ViewPager.OnPageChangeListener{
-        private View cachView = null;
+        private ImageView cachView = null;
+        private LinearLayout linearLayout;
+
+        public PageListener(LinearLayout linearLayout){
+            this.linearLayout = linearLayout;
+        }
 
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -197,12 +208,55 @@ public class JAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         public void onPageSelected(int position) {
             JLog.print(TAG, "onPageSelected position = " + position);
             position = position % headerImageList.size();
+
+            if(cachView != null){
+                cachView.setImageDrawable(mDot);
+            }
+            ImageView v = (ImageView)linearLayout.getChildAt(position);
+            if(null != v){
+                v.setImageDrawable(mDotSelectColor);
+            }
+            cachView = v;
         }
 
         @Override
         public void onPageScrollStateChanged(int state) {
 
         }
+    }
+
+    /**
+     * 初始化viewpager小圆点
+     * @param holder
+     */
+    private void initViewPager(RecyclerView.ViewHolder holder){
+        HeaderViewHolder headHolder = null;
+        if(holder instanceof  HeaderViewHolder){
+            headHolder = (HeaderViewHolder)holder;
+        }else{
+            JLog.print(TAG, "initViewPager holder错误");
+            return;
+        }
+        ViewPager pager = headHolder.viewPager;
+        LinearLayout linearLayout = headHolder.mDotContainer;
+
+        ViewGroup.LayoutParams dot_params = new ViewGroup.LayoutParams(30,30);
+        //ViewGroup.LayoutParams image_params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        ImageView v = new ImageView(context);
+        v.setImageDrawable(mDotSelectColor);
+        v.setLayoutParams(dot_params);
+        linearLayout.addView(v, 0);
+        for(int i = 1; i < headerImageList.size(); i++){
+            v = new ImageView(context);
+            v.setImageDrawable(mDot);
+            v.setLayoutParams(dot_params);
+            linearLayout.addView(v, i);
+        }
+
+        pager.setAdapter(new PagerAdapter());
+        pager.setOnPageChangeListener(new PageListener(linearLayout));
+        pager.setPageMargin(20);
+        pager.setCurrentItem(headerImageList.size()*100);
     }
     //====================viewpager适配及监听========================================================
 
