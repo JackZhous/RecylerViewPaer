@@ -9,7 +9,7 @@
  *         http://blog.csdn.net/jackzhouyu
  */
 
-package com.jack.zhou.jrecyclerview;
+package com.jack.zhou.jrecyclerview.test;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -30,6 +30,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.jack.zhou.jrecyclerview.R;
 import com.jack.zhou.jrecyclerview.adapter.JAdapter;
 import com.jack.zhou.jrecyclerview.recycler.JRecyclerView;
 
@@ -127,15 +128,15 @@ public class MainActivity extends AppCompatActivity
 
 
     private void initResources(){
-        recyclerView = (RecyclerView)findViewById(R.id.recycler);
+        //recyclerView = (RecyclerView)findViewById(R.id.recycler);
 
 
-        init();
+        //init();
     }
 
     public void init(){
 
-        JRecyclerView jview = new JRecyclerView(this, recyclerView);
+        JRecyclerView jview = new JRecyclerView(this);
         ArrayList<ImageView> headerImageList = new ArrayList<>();
         int[] draw = new int[]{R.drawable.ic_answer_banner, R.drawable.ic_certified_id, R.drawable.ic_group_header_bg};
 
@@ -166,6 +167,9 @@ public class MainActivity extends AppCompatActivity
         final GridLayoutManager manager = new GridLayoutManager(this,2, LinearLayoutManager.VERTICAL, false);
         jview.setManager(manager);
         jview.startToShow();
+        /**
+         * 设置一个item占用表格里面的多少布局
+         */
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
             @Override
             public int getSpanSize(int position) {

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- JRecyclerView的头部广告引用和胸部引用-->
+    <declare-styleable name="recycler">
+        <attr name="head" format="reference"/>
+        <attr name="body" format="reference"/>
+    </declare-styleable>
+    
+</resources>
