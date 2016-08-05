@@ -19,7 +19,7 @@ import android.util.Log;
 public class JLog {
 
     private static final String JTAG = "jackzhous";
-    public static boolean isDebug = true;
+    public static boolean isDebug = false;
 
     public static void print(String TAG, String message){
         if(isDebug){

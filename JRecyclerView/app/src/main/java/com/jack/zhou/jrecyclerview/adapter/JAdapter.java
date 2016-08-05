@@ -41,84 +41,65 @@ public class JAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int TYPE_CONTENT = 1;                          //胸部
     private static final String TAG = "JAdapter";
 
-    private View headerView;
-    private View bodyView;
-
-    private ArrayList<Drawable> bodyImageList;
-    private ArrayList<String> bodyTextList;                           //body内容
-
     private int header_layout;
     private int body_layout;
-
-    private JViewHolder headerViewHolder;
-    private JViewHolder bodyViewHolder;
+    private JViewHolder viewHolder;
 
 
-    public JAdapter(Activity context, int header, int bodyer) {
+    public JAdapter(JViewHolder viewHolder, int header, int bodyer) {
+        JLog.print(TAG, "JAdapter -- header = " + header);
         this.header_layout = header;
         this.body_layout = bodyer;
+        this.viewHolder = viewHolder;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         JLog.print(TAG, "onCreateViewHolder -- viewType = " + viewType);
-        RecyclerView.ViewHolder holder = null;
+        View view = null;
         if (viewType == TYPE_HEADER) {
-            headerView = LayoutInflater.from(parent.getContext()).inflate(header_layout, null);
-           //holder = new HeaderViewHolder(headerView);
+            view = LayoutInflater.from(parent.getContext()).inflate(header_layout, null);
+            viewHolder.findHead(view);
         } else {
-            bodyView = LayoutInflater.from(parent.getContext()).inflate(body_layout, null);
-            holder = new BodyViewHolder(bodyView);
+            view = LayoutInflater.from(parent.getContext()).inflate(body_layout, null);
+            viewHolder.findBody(view);
         }
 
-        return holder;
+        return new Holder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         JLog.print(TAG, "onBindViewHolder -- position = " + position);
-        if (holder instanceof BodyViewHolder) {
-            position = position - 1;                                                        //头部占用了一个位置，所以胸部必须减掉头部的1
-            ((BodyViewHolder) holder).image.setImageDrawable(bodyImageList.get(position));
-            ((BodyViewHolder) holder).tv.setText(bodyTextList.get(position));
+        if (getItemViewType(position) == TYPE_CONTENT) {                                        //说明是胸部
+            position = position - 1;                                                            //头部占用了一个位置，所以胸部必须减掉头部的1
+            viewHolder.setBody(position);
         } else {
-            //initViewPager(holder);
+            viewHolder.setHead();
         }
     }
 
     @Override
     public int getItemCount() {
-        return bodyImageList.size() + 1;
+
+        JLog.print(TAG, "getItemCount  " + viewHolder.size());
+        return viewHolder.size();
     }
 
     @Override
     public int getItemViewType(int position) {
+        JLog.print(TAG, "getItemViewType  " );
         if (position == 0) {
             return TYPE_HEADER;
         }
         return TYPE_CONTENT;
     }
 
-    /**
-     * 胸部viewholder
-     */
-    private class BodyViewHolder extends RecyclerView.ViewHolder {
-        public ImageView image;
-        public TextView tv;
 
-        public BodyViewHolder(View itemView) {
+    private class Holder extends RecyclerView.ViewHolder{
+        public Holder(View itemView) {
             super(itemView);
-
-            image = (ImageView) itemView.findViewById(R.id.image);
-            tv = (TextView) itemView.findViewById(R.id.tv_info);
         }
     }
 
-    public void setHeaderViewHolder(JViewHolder headerViewHolder) {
-        this.headerViewHolder = headerViewHolder;
-    }
-
-    public void setBodyViewHolder(JViewHolder bodyViewHolder) {
-        this.bodyViewHolder = bodyViewHolder;
-    }
 }

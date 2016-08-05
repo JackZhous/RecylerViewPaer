@@ -33,29 +33,21 @@ import android.widget.ImageView;
 import com.jack.zhou.jrecyclerview.R;
 import com.jack.zhou.jrecyclerview.adapter.JAdapter;
 import com.jack.zhou.jrecyclerview.recycler.JRecyclerView;
+import com.jack.zhou.jrecyclerview.util.JLog;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private RecyclerView recyclerView;
+    private JRecyclerView recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("viewpager + recyclerView");
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -68,6 +60,23 @@ public class MainActivity extends AppCompatActivity
 
         initResources();
     }
+
+
+    /**
+     * 用法如此 方法
+     */
+    private void initResources(){
+
+        recyclerView = (JRecyclerView)this.findViewById(R.id.recycler);                             //找到其id
+        MyHeaderViewHolder viewHolder = new MyHeaderViewHolder(this);                               //自定义一个形如MyHeaderViewHolder，该holder必须实现JViewHolder接口，并实现其内部的方法
+        recyclerView.setViewHolder(viewHolder);                                                     //为你的JRecyclerView设置JViewHolder
+//        recyclerView.setManager(new LinearLayoutManager(this));                                   //你可以设置LayoutManager也可以不用设置，我内部默认了一个有两列的GridLayoutManager
+//        recyclerView.setHeader_layout(R.layout.recyler_header);                                   //布局可以这里设置，也可以在xml里面使用app:head="@layout/recyler_header"
+//        recyclerView.setBody_layout(R.layout.recycler_content);
+//        recyclerView.setContext(this);
+        recyclerView.startToShow();                                                                 //开始显示
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -127,59 +136,5 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    private void initResources(){
-        //recyclerView = (RecyclerView)findViewById(R.id.recycler);
-
-
-        //init();
-    }
-
-    public void init(){
-
-        JRecyclerView jview = new JRecyclerView(this);
-        ArrayList<ImageView> headerImageList = new ArrayList<>();
-        int[] draw = new int[]{R.drawable.ic_answer_banner, R.drawable.ic_certified_id, R.drawable.ic_group_header_bg};
-
-        for(int i = 0; i < draw.length; i++){
-            ImageView v = new ImageView(this);
-            ViewGroup.LayoutParams image_params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            v.setImageDrawable(getResources().getDrawable(draw[i]));
-            v.setLayoutParams(image_params);
-            headerImageList.add(v);
-        }
-
-        JAdapter adapter = new JAdapter(this);
-        adapter.setHeaderImageList(headerImageList);
-        adapter.setmDot(getDrawable(R.drawable.ic_circle_white));
-        adapter.setmDotSelectColor(R.color.colorPrimary);
-
-        draw = new int[]{R.drawable.img_tips_error_banner_tv, R.drawable.img_tips_error_load_error, R.drawable.img_tips_error_no_permission, R.drawable.img_tips_error_not_foud, R.drawable.img_tips_error_not_loin, R.drawable.img_tips_error_space_no_data, R.drawable.img_tips_error_space_no_permission, R.drawable.img_tips_live_room_locked};
-        ArrayList<Drawable> bodyImageList = new ArrayList<>();
-        ArrayList<String> bodyTextList = new ArrayList<>();
-        for(int i = 0 ; i < draw.length; i++){
-            bodyImageList.add(getDrawable(draw[i]));
-            bodyTextList.add("图片简介"+i);
-        }
-        adapter.setBodyImageList(bodyImageList);
-        adapter.setBodyTextList(bodyTextList);
-
-        jview.setAdapter(adapter);
-        final GridLayoutManager manager = new GridLayoutManager(this,2, LinearLayoutManager.VERTICAL, false);
-        jview.setManager(manager);
-        jview.startToShow();
-        /**
-         * 设置一个item占用表格里面的多少布局
-         */
-        manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup(){
-            @Override
-            public int getSpanSize(int position) {
-                if (0 == position){
-                    return manager.getSpanCount();
-                }
-
-                return 1;
-            }
-        });
-    }
 
 }
