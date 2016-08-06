@@ -36,6 +36,7 @@ public class JRecyclerView extends RecyclerView {
     private int body_layout;                            //胸部布局文件
     private LayoutManager manager;
     private GridLayoutManager default_manager;          //默认布局是表格布局
+    private int grid_count = 2;                         //表格布局列数
 
     private JViewHolder viewHolder;
 
@@ -66,6 +67,8 @@ public class JRecyclerView extends RecyclerView {
         initDefult(attrs);
     }
 
+
+
     /**
      * 初始化默认数据
      */
@@ -79,7 +82,14 @@ public class JRecyclerView extends RecyclerView {
             array.recycle();
         }
 
-        default_manager = new GridLayoutManager(context,2, LinearLayoutManager.VERTICAL, false);
+    }
+
+    /**
+     * 初始化适配器
+     */
+    public void initAdapter(){
+
+        default_manager = new GridLayoutManager(context, grid_count, LinearLayoutManager.VERTICAL, false);
         default_manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -90,13 +100,6 @@ public class JRecyclerView extends RecyclerView {
                 return 1;
             }
         });
-
-    }
-
-    /**
-     * 初始化适配器
-     */
-    public void initAdapter(){
 
         adapter = new JAdapter(viewHolder, header_layout, body_layout);
 
@@ -114,6 +117,10 @@ public class JRecyclerView extends RecyclerView {
 
     public void setContext(Context context) {
         this.context = context;
+    }
+
+    public void setGrid_count(int grid_count) {
+        this.grid_count = grid_count;
     }
 
     /**
@@ -136,12 +143,14 @@ public class JRecyclerView extends RecyclerView {
      * 设置其recycleview并开始显示
      */
     public void startToShow(){
+        initAdapter();
+
         if(null == manager){
             this.setLayoutManager(default_manager);
         }else{
             this.setLayoutManager(manager);
         }
-        initAdapter();
+
 
         setAdapter(adapter);
     }

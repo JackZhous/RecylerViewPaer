@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity
         recyclerView = (JRecyclerView)this.findViewById(R.id.recycler);                             //找到其id
         MyHeaderViewHolder viewHolder = new MyHeaderViewHolder(this);                               //自定义一个形如MyHeaderViewHolder，该holder必须实现JViewHolder接口，并实现其内部的方法
         recyclerView.setViewHolder(viewHolder);                                                     //为你的JRecyclerView设置JViewHolder
+//        recyclerView.setGrid_count(3);                                                            //设置默认表格布局的表格列数
 //        recyclerView.setManager(new LinearLayoutManager(this));                                   //你可以设置LayoutManager也可以不用设置，我内部默认了一个有两列的GridLayoutManager
 //        recyclerView.setHeader_layout(R.layout.recyler_header);                                   //布局可以这里设置，也可以在xml里面使用app:head="@layout/recyler_header"
 //        recyclerView.setBody_layout(R.layout.recycler_content);
