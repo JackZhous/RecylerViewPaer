@@ -2,7 +2,7 @@
 A ViewPager+RecyclerView implemention base on RecyclerView. Support the header(ViewPager) and the body(RecyclerView)
 
 # 项目效果图
-(https://github.com/JackZhous/RecylerViewPaer/tree/master/JRecyclerView/app/src/test/java/demo.gif)
+![demo](https://github.com/JackZhous/RecylerViewPaer/tree/master/JRecyclerView/app/src/test/java/demo.gif)
 
 # 特性
 1. 扩展自RecyclerView的一款组件JRecyclerView
