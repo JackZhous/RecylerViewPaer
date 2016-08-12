@@ -2,7 +2,7 @@
 A ViewPager+RecyclerView implemention base on RecyclerView. Support the header(ViewPager) and the body(RecyclerView)
 
 # 项目效果图
-![demo](https://github.com/JackZhous/RecylerViewPaer/tree/master/JRecyclerView/app/src/test/java/demo.gif)
+![demo](demo.gif)
 
 # 特性
 1. 扩展自RecyclerView的一款组件JRecyclerView
@@ -14,22 +14,9 @@ A ViewPager+RecyclerView implemention base on RecyclerView. Support the header(V
 # 用法
 
 ## import
+1. clone至本地
+2. import as a moudle
 
-
-```gradle
-// Yes, I have switched to jitpack.io.
-
-repositories {
-    ...
-    maven { url "https://jitpack.io" }
-    ...
-}
-
-dependencies {
-    ...
-    ...
-}
-```
 ## Basic Usage:
 
 ``` xml
